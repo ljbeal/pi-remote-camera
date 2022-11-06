@@ -2,7 +2,10 @@
 from importlib import import_module
 import os
 from flask import Flask, render_template, Response
-from camera_pi import Camera
+try:
+    from camera_pi import Camera
+except ImportError:
+    from camera import Camera
 
 # Raspberry Pi camera module (requires picamera package)
 # from camera_pi import Camera
