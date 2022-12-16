@@ -3,4 +3,67 @@
     <h1>Video Streaming Demonstration</h1>
     <img src="{{ url_for('video_feed') }}">
   </body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+        $(function() {
+          $('a#move-l').on('click', function(e) {
+            e.preventDefault()
+            $.getJSON('/move-l',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
+<script type=text/javascript>
+        $(function() {
+          $('a#move-r').on('click', function(e) {
+            e.preventDefault()
+            $.getJSON('/move-r',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
+<script type=text/javascript>
+        $(function() {
+          $('a#move-u').on('click', function(e) {
+            e.preventDefault()
+            $.getJSON('/move-u',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
+<script type=text/javascript>
+        $(function() {
+          $('a#move-d').on('click', function(e) {
+            e.preventDefault()
+            $.getJSON('/move-d',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
+<div class='container'>
+    <h3>Test</h3>
+        <form>
+            <a href=# id=move-l><button class='btn btn-default'>Test</button></a>
+        </form>
+        <form>
+            <a href=# id=move-u><button class='btn btn-default'>Test</button></a>
+            <a href=# id=move-d><button class='btn btn-default'>Test</button></a>
+        </form>
+        <form>
+            <a href=# id=move-r><button class='btn btn-default'>Test</button></a>
+        </form>
+
+</div>
 </html>

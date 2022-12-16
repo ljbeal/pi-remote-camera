@@ -34,5 +34,29 @@ def video_feed():
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
+@app.route('/move-u')
+def move_u():
+    print("move u")
+    return 'u'
+
+
+@app.route('/move-d')
+def move_d():
+    print("move d")
+    return 'd'
+
+
+@app.route('/move-l')
+def move_l():
+    print("move l")
+    return 'l'
+
+
+@app.route('/move-r')
+def move_r():
+    print("move r")
+    return 'r'
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', threaded=True)
