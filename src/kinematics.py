@@ -3,7 +3,7 @@ import time
 try:
     import RPi.GPIO as GPIO
 except ImportError:
-    pass
+    print('could not import RPi.GPIO')
 
 
 class Movement:
@@ -21,11 +21,13 @@ class Servo:
                  pin: int,
                  init_val: float = 90.0,
                  limit: float = 180.0,
-                 loop: bool = True):
+                 loop: bool = True,
+                 verbose: bool = False):
 
         self._value = None
         self._limit = limit
         self._loop = loop
+        self._verbose = verbose
 
         self._pin = pin
         self.angle = init_val
@@ -60,6 +62,14 @@ class Servo:
         return str(self.angle)
 
     @property
+    def verbose(self):
+        return self._verbose
+
+    @verbose.setter
+    def verbose(self, new):
+        self._verbose = new
+
+    @property
     def angle(self):
         return float(self._value)
 
@@ -74,6 +84,9 @@ class Servo:
         self._value = new
         self._set_angle(self._value)
 
+    def sleep(self):
+        self._pwm.ChangeDutyCycle(0)
+
     def _set_angle(self, angle):
         # set angle for range
         dcmin = 2.5
@@ -84,8 +97,10 @@ class Servo:
         dcycle = angle / divisor + dcmin
 
         try:
-            print(f'setting duty cycle to {dcycle}')
+            if self.verbose:
+                print(f'angle {angle}°, setting duty cycle to {dcycle:.2f}')
             self._pwm.ChangeDutyCycle(dcycle)
+
         except AttributeError:
             pass
 
