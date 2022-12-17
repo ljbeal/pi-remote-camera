@@ -105,9 +105,12 @@ class Servo:
 
         sleep_time = Servo._full_travel_time * travel / 180
 
+        if self._verbose:
+            print(f'moving to angle {angle}, pulsewidth of {pw}. '
+                  f'Sleeping for {sleep_time}s before disabling pwm')
+
         self._pi.set_servo_pulsewidth(self._pin, pw)
         time.sleep(sleep_time)
-
         self._pi.set_servo_pulsewidth(self._pin, 0)
 
     def scan(self, n: int = 10):
