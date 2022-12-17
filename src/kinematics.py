@@ -1,9 +1,10 @@
 import time
 
 try:
-    import RPi.GPIO as GPIO
+    # import RPi.GPIO as GPIO
+    import pigpio
 except ImportError:
-    print('could not import RPi.GPIO')
+    print('could not import gpio library')
 
 
 class Movement:
@@ -16,6 +17,8 @@ class Movement:
 
 
 class Servo:
+
+    _full_travel_time = 0.75  # approx time taken to travel 180°
 
     def __init__(self,
                  pin: int,
@@ -30,16 +33,18 @@ class Servo:
         self._verbose = verbose
 
         self._pin = pin
-        self.angle = init_val
 
         try:
-            GPIO.setwarnings(False)
-            GPIO.setmode(GPIO.BOARD)
-            GPIO.setup(pin, GPIO.OUT)
-            self._pwm = GPIO.PWM(pin, 50)
-            self._pwm.start(0)
+            print('attempting connection to gpio pins')
+            print('if this takes too long, make sure to start the daemon ')
+            print('with sudo systemctl start pigpiod')
+            self._pi = pigpio.pi()
+            self._pi.set_mode(6, pigpio.OUTPUT)
+            self._pi.set_PWM_frequency(pin, 50)
         except NameError:
-            self._pwm = None
+            self._pi = None
+
+        self.angle = init_val
 
     def __add__(self, other):
         self.angle = self.angle + other
@@ -81,28 +86,29 @@ class Servo:
             else:
                 new = self._limit
 
-        self._value = new
-        self._set_angle(self._value)
-
-    def sleep(self):
-        self._pwm.ChangeDutyCycle(0)
-
-    def _set_angle(self, angle):
-        # set angle for range
-        dcmin = 2.5
-        dcmax = 12.5
-
-        divisor = 180/(dcmax - dcmin)
-
-        dcycle = angle / divisor + dcmin
-
         try:
-            if self.verbose:
-                print(f'angle {angle}°, setting duty cycle to {dcycle:.2f}')
-            self._pwm.ChangeDutyCycle(dcycle)
+            dtheta = abs(new - self._value)
+        except TypeError:
+            dtheta = 180
 
-        except AttributeError:
-            pass
+        self._value = new
+        self._move_to_angle(self._value, dtheta)
+
+    def _move_to_angle(self, angle, travel=180):
+
+        pmin = 500
+        pmax = 2500
+
+        divisor = 180 / (pmax - pmin)
+
+        pw = int(angle / divisor + pmin)
+
+        sleep_time = Servo._full_travel_time * travel / 180
+
+        self._pi.set_servo_pulsewidth(self._pin, pw)
+        time.sleep(sleep_time)
+
+        self._pi.set_servo_pulsewidth(self._pin, 0)
 
     def scan(self, n: int = 10):
         for i in range(n + 1):
