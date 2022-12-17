@@ -1,3 +1,5 @@
+import time
+
 try:
     import RPi.GPIO as GPIO
 except ImportError:
@@ -86,3 +88,11 @@ class Servo:
             self._pwm.ChangeDutyCycle(dcycle)
         except AttributeError:
             pass
+
+    def scan(self, n: int = 10):
+        for i in range(n + 1):
+            angle = i * self._limit/n
+
+            print(f'setting angle to {angle}')
+            self.angle = angle
+            time.sleep(1)
