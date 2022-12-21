@@ -2,6 +2,9 @@
 from importlib import import_module
 import os
 from flask import Flask, render_template, Response
+
+from gimbal import gimbal
+
 try:
     from camera_pi import Camera
 except ImportError:
@@ -36,26 +39,38 @@ def video_feed():
 
 @app.route('/move-u')
 def move_u():
-    print("move u")
+    print('u')
+    gimbal.move(x=0, y=5)
     return 'u'
 
 
 @app.route('/move-d')
 def move_d():
-    print("move d")
+    print('d')
+    gimbal.move(x=0, y=-5)
     return 'd'
 
 
 @app.route('/move-l')
 def move_l():
-    print("move l")
+    print('l')
+    gimbal.move(x=5, y=0)
     return 'l'
 
 
 @app.route('/move-r')
 def move_r():
-    print("move r")
+    print('r')
+    gimbal.move(x=-5, y=0)
     return 'r'
+
+
+@app.route('/move-c')
+def move_c():
+    print('c')
+    gimbal.x = 90
+    gimbal.y = 90
+    return 'c'
 
 
 if __name__ == '__main__':

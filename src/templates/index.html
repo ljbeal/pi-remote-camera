@@ -1,6 +1,6 @@
 <html>
   <body>
-    <h1>Video Streaming Demonstration</h1>
+    <h1>Remote Web Camera Interface</h1>
     <img src="{{ url_for('video_feed') }}">
   </body>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -52,18 +52,21 @@
           });
         });
 </script>
-<div class='container'>
-    <h3>Test</h3>
-        <form>
-            <a href=# id=move-l><button class='btn btn-default'>Test</button></a>
-        </form>
-        <form>
-            <a href=# id=move-u><button class='btn btn-default'>Test</button></a>
-            <a href=# id=move-d><button class='btn btn-default'>Test</button></a>
-        </form>
-        <form>
-            <a href=# id=move-r><button class='btn btn-default'>Test</button></a>
-        </form>
-
-</div>
+  <table id="control">
+      <tr>
+          <td></td>
+          <td><a href=# id=move-u><button class='btn btn-default'>Move U</button></a></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td><a href=# id=move-l><button class='btn btn-default'>Move L</button></a></td>
+          <td><a href=# id=move-c><button class='btn btn-default'>Centre</button></a></td>
+          <td><a href=# id=move-r><button class='btn btn-default'>Move R</button></a></td>
+      </tr>
+      <tr>
+          <td></td>
+          <td><a href=# id=move-d><button class='btn btn-default'>Move D</button></a></td>
+          <td></td>
+      </tr>
+  </table>
 </html>
