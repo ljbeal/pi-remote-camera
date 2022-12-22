@@ -39,7 +39,7 @@ class Servo:
             print('if this takes too long, make sure to start the daemon ')
             print('with sudo systemctl start pigpiod')
             self._pi = pigpio.pi()
-            self._pi.set_mode(6, pigpio.OUTPUT)
+            self._pi.set_mode(pin, pigpio.OUTPUT)
             self._pi.set_PWM_frequency(pin, 50)
         except NameError:
             self._pi = None
@@ -110,8 +110,8 @@ class Servo:
                   f'Sleeping for {sleep_time}s before disabling pwm')
 
         self._pi.set_servo_pulsewidth(self._pin, pw)
-        time.sleep(sleep_time)
-        self._pi.set_servo_pulsewidth(self._pin, 0)
+        # time.sleep(sleep_time)
+        # self._pi.set_servo_pulsewidth(self._pin, 0)
 
     def scan(self, n: int = 10):
         for i in range(n + 1):
