@@ -1,8 +1,14 @@
 <html>
   <body>
     <h1>Remote Web Camera Interface</h1>
-    <img src="{{ url_for('video_feed') }}">
+    <img src="{{ url_for('video_feed') }}" class="view">
   </body>
+<style>
+.view {
+    height: 90%;
+    width: auto;
+}
+</style>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type=text/javascript>
         $(function() {
