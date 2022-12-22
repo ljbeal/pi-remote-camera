@@ -52,6 +52,18 @@
           });
         });
 </script>
+<script type=text/javascript>
+        $(function() {
+          $('a#move-c').on('click', function(e) {
+            e.preventDefault()
+            $.getJSON('/move-c',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
   <table id="control">
       <tr>
           <td></td>
