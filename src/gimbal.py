@@ -35,4 +35,4 @@ class control:
         print(f'y is now {self.y}')
 
 
-gimbal = control(5, 26)
+gimbal = control(18, 19)
