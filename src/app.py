@@ -65,6 +65,34 @@ def move_r():
     return 'r'
 
 
+@app.route('/move-dl')
+def move_dl():
+    print('dl')
+    gimbal.move(x=5, y=-5)
+    return 'dl'
+
+
+@app.route('/move-dr')
+def move_dr():
+    print('dr')
+    gimbal.move(x=-5, y=-5)
+    return 'dr'
+
+
+@app.route('/move-ul')
+def move_ul():
+    print('ul')
+    gimbal.move(x=5, y=5)
+    return 'ul'
+
+
+@app.route('/move-ur')
+def move_ur():
+    print('ur')
+    gimbal.move(x=-5, y=5)
+    return 'ur'
+
+
 @app.route('/move-c')
 def move_c():
     print('c')

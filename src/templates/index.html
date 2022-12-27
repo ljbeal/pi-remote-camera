@@ -70,21 +70,76 @@
           });
         });
 </script>
+<script type=text/javascript>
+        $(function() {
+          $('a#move-ul').on('click', function(e) {
+            e.preventDefault()
+            $.getJSON('/move-ul',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
+<script type=text/javascript>
+        $(function() {
+          $('a#move-ur').on('click', function(e) {
+            e.preventDefault()
+            $.getJSON('/move-ur',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
+<script type=text/javascript>
+        $(function() {
+          $('a#move-dl').on('click', function(e) {
+            e.preventDefault()
+            $.getJSON('/move-dl',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
+<script type=text/javascript>
+        $(function() {
+          $('a#move-dr').on('click', function(e) {
+            e.preventDefault()
+            $.getJSON('/move-dr',
+                function(data) {
+              //do nothing
+            });
+            return false;
+          });
+        });
+</script>
   <table id="control">
       <tr>
-          <td></td>
-          <td><a href=# id=move-u><button class='btn btn-default'>Move U</button></a></td>
-          <td></td>
+          <td><a href=# id=move-ul><button class='ctrlbtn'>UL</button></a></td>
+          <td><a href=# id=move-u><button class='ctrlbtn'>Move U</button></a></td>
+          <td><a href=# id=move-ur><button class='ctrlbtn'>UR</button></a></td>
       </tr>
       <tr>
-          <td><a href=# id=move-l><button class='btn btn-default'>Move L</button></a></td>
-          <td><a href=# id=move-c><button class='btn btn-default'>Centre</button></a></td>
-          <td><a href=# id=move-r><button class='btn btn-default'>Move R</button></a></td>
+          <td><a href=# id=move-l><button class='ctrlbtn'>Move L</button></a></td>
+          <td><a href=# id=move-c><button class='ctrlbtn'>Centre</button></a></td>
+          <td><a href=# id=move-r><button class='ctrlbtn'>Move R</button></a></td>
       </tr>
       <tr>
-          <td></td>
-          <td><a href=# id=move-d><button class='btn btn-default'>Move D</button></a></td>
-          <td></td>
+          <td><a href=# id=move-dl><button class='ctrlbtn'>DR</button></a></td>
+          <td><a href=# id=move-d><button class='ctrlbtn'>Move D</button></a></td>
+          <td><a href=# id=move-dr><button class='ctrlbtn'>DL</button></a></td>
       </tr>
   </table>
+<style>
+.ctrlbtn {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
 </html>
