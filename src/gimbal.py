@@ -1,6 +1,10 @@
 from kinematics import Servo
 
 
+RIGHT = -1
+UP = -1
+
+
 class control:
 
     def __init__(self, azpin, elpin):

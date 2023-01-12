@@ -5,7 +5,7 @@ import io
 import picamera
 from threading import Condition
 
-from gimbal import gimbal
+import gimbal
 
 app = Flask(__name__)
 
@@ -55,70 +55,71 @@ def video_feed():
 @app.route('/move-u')
 def move_u():
     print('u')
-    gimbal.move(x=0, y=5)
+    gimbal.gimbal.move(x=0, y=gimbal.UP*5)
     return 'u'
 
 
 @app.route('/move-d')
 def move_d():
     print('d')
-    gimbal.move(x=0, y=-5)
+    gimbal.gimbal.move(x=0, y=-gimbal.UP*5)
     return 'd'
 
 
 @app.route('/move-l')
 def move_l():
     print('l')
-    gimbal.move(x=-5, y=0)
+    gimbal.gimbal.move(x=-gimbal.RIGHT*5, y=0)
     return 'l'
 
 
 @app.route('/move-r')
 def move_r():
     print('r')
-    gimbal.move(x=5, y=0)
+    gimbal.gimbal.move(x=gimbal.RIGHT*5, y=0)
     return 'r'
 
 
 @app.route('/move-dl')
 def move_dl():
     print('dl')
-    gimbal.move(x=-5, y=-5)
+    gimbal.gimbal.move(x=-gimbal.RIGHT*5, y=-gimbal.UP*5)
     return 'dl'
 
 
 @app.route('/move-dr')
 def move_dr():
     print('dr')
-    gimbal.move(x=5, y=-5)
+    gimbal.gimbal.move(x=gimbal.RIGHT*5, y=-gimbal.UP*5)
     return 'dr'
 
 
 @app.route('/move-ul')
 def move_ul():
     print('ul')
-    gimbal.move(x=-5, y=5)
+    gimbal.gimbal.move(x=-gimbal.RIGHT*5, y=gimbal.UP*5)
     return 'ul'
 
 
 @app.route('/move-ur')
 def move_ur():
     print('ur')
-    gimbal.move(x=5, y=5)
+    gimbal.gimbal.move(x=gimbal.RIGHT*5, y=gimbal.UP*5)
     return 'ur'
 
 
 @app.route('/move-c')
 def move_c():
     print('c')
-    gimbal.x = 90
-    gimbal.y = 90
+    gimbal.gimbal.x = 90
+    gimbal.gimbal.y = 90
     return 'c'
 
 
 if __name__ == '__main__':
     with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
         output = StreamingOutput()
+        camera.rotation = 180
         camera.start_recording(output, format='mjpeg')
 
         try:
