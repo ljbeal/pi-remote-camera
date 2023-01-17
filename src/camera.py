@@ -1,14 +1,44 @@
-import time
-from base_camera import BaseCamera
+import io
+from threading import Condition
+import picamera
 
 
-class Camera(BaseCamera):
-    """An emulated camera implementation that streams a repeated sequence of
-    files 1.jpg, 2.jpg and 3.jpg at a rate of one frame per second."""
-    imgs = [open(f + '.jpg', 'rb').read() for f in ['1', '2', '3']]
+class StreamingOutput(object):
+    def __init__(self):
+        self.frame = None
+        self.buffer = io.BytesIO()
+        self.condition = Condition()
 
-    @staticmethod
-    def frames():
+    def write(self, buf):
+        if buf.startswith(b'\xff\xd8'):
+            # New frame, copy the existing buffer's content and notify all
+            # clients it's available
+            self.buffer.truncate()
+            with self.condition:
+                self.frame = self.buffer.getvalue()
+                self.condition.notify_all()
+            self.buffer.seek(0)
+        return self.buffer.write(buf)
+
+
+class Camera:
+
+    def __init__(self, rotation: int = 180):
+        self._camera = picamera.PiCamera(resolution='640x480', framerate=24)
+
+        self._output = StreamingOutput()
+
+        self._camera.rotation = rotation
+        self._camera.start_recording(self._output, format='mjpeg')
+
+    def gen(self):
+        """Video streaming generator function."""
+        yield b'--frame\r\n'
         while True:
-            yield Camera.imgs[int(time.time()) % 3]
-            time.sleep(1)
+            with self._output.condition:
+                self._output.condition.wait()
+                frame = self._output.frame
+                yield b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n--frame\r\n'
+
+    def stop_recording(self):
+        self._camera.stop_recording()
