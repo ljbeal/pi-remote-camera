@@ -24,15 +24,24 @@ class StreamingOutput(object):
 class Camera:
 
     def __init__(self, rotation: int = 180):
-        self._camera = picamera.PiCamera(resolution='640x480', framerate=24)
+        try:
+            self._camera = picamera.PiCamera(resolution='640x480', framerate=24)
 
-        self._output = StreamingOutput()
+            self._camera.rotation = rotation
 
-        self._camera.rotation = rotation
-        self._camera.start_recording(self._output, format='mjpeg')
+            self._output = StreamingOutput()
+            self._camera.start_recording(self._output, format='mjpeg')
+
+        except picamera.exc.PiCameraMMALError:
+            self._camera = None
+            self._output = None
 
     def gen(self):
         """Video streaming generator function."""
+        if self._camera is None:
+            while True:
+                yield b'--frame\r\n'
+
         yield b'--frame\r\n'
         while True:
             with self._output.condition:

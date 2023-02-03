@@ -1,11 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/gunicorn -w 1 --threads 2 -b 0.0.0.0:5000 app:app
+# /usr/bin/env python
 from flask import Flask, render_template, Response
 
-from gimbal import gimbal, UP, RIGHT
-from camera import Camera
+from src.gimbal import gimbal, UP, RIGHT
+from src.camera import Camera
 
 app = Flask(__name__)
-cam = Camera(180)
 
 @app.route('/')
 def index():
@@ -83,6 +83,8 @@ def move_c():
     gimbal.y = 90
     return 'c'
 
+
+cam = Camera(180)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', threaded=True)

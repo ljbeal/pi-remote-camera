@@ -1,4 +1,4 @@
-from kinematics import Servo
+from .kinematics import Servo
 
 
 RIGHT = -1
