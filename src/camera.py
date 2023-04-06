@@ -1,9 +1,12 @@
 import io
 from threading import Condition
-import picamera2
+
+from picamera2 import Picamera2
+from picamera2.encoders import H264Encoder
+from picamera2.outputs import FileOutput
 
 
-class StreamingOutput(object):
+class StreamingOutput:
     def __init__(self):
         self.frame = None
         self.buffer = io.BytesIO()
@@ -25,7 +28,7 @@ class Camera:
 
     def __init__(self, rotation: int = 180):
         try:
-            self._camera = picamera2.PiCamera2()
+            self._camera = Picamera2()
             vid_config = self._camera.create_video_configuration()
             self._camera.configure(vid_config)
             encoder = H264Encoder(bitrate=10000000)
@@ -33,9 +36,10 @@ class Camera:
             self._camera.rotation = rotation
 
             self._output = StreamingOutput()
-            self._camera.start_recording(encoder, self._output)
-        except:
-            pass
+            self._camera.start_recording(encoder, FileOutput(self._output.buffer))
+        except Exception as E:
+            print('could not init camera')
+            raise E
 
     def gen(self):
         """Video streaming generator function."""
