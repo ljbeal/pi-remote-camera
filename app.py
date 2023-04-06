@@ -84,7 +84,7 @@ def move_c():
     return 'c'
 
 
-cam = Camera(180)
+cam = Camera(flip=True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', threaded=True)
