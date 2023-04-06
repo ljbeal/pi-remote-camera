@@ -24,12 +24,10 @@ class Servo:
                  pin: int,
                  init_val: float = 90.0,
                  limit: float = 180.0,
-                 loop: bool = True,
                  verbose: bool = False):
 
         self._value = None
         self._limit = limit
-        self._loop = loop
         self._verbose = verbose
 
         self._pin = pin
@@ -81,10 +79,9 @@ class Servo:
     @angle.setter
     def angle(self, new):
         if new > self._limit:
-            if self._loop:
-                new = new - self._limit
-            else:
-                new = self._limit
+            new = self._limit
+        if new < 0:
+            new = 0
 
         try:
             dtheta = abs(new - self._value)
