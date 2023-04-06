@@ -2,7 +2,8 @@ import io
 from threading import Condition
 
 from picamera2 import Picamera2
-from picamera2.encoders import JpegEncoder
+from picamera2.encoders import MJPEGEncoder as PiCamEncoder
+from picamera2.encoders import Quality
 from picamera2.outputs import FileOutput
 
 
@@ -24,12 +25,12 @@ class Camera:
             self._camera = Picamera2()
             vid_config = self._camera.create_video_configuration()
             self._camera.configure(vid_config)
-            encoder = JpegEncoder(num_threads=2)
+            encoder = PiCamEncoder()
 
             self._camera.rotation = rotation
 
             self._output = StreamingOutput()
-            self._camera.start_recording(encoder, FileOutput(self._output))
+            self._camera.start_recording(encoder, FileOutput(self._output), quality=Quality.VERY_HIGH)
         except Exception as E:
             print('could not init camera')
             raise E
